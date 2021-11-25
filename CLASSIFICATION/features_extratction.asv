@@ -1,0 +1,47 @@
+
+
+function [entradas] = features_extratction(dados, grupo)
+
+X = matriz_entrada;
+
+switch grupo
+    case 1
+        % Tradicional: Subestação, tensão e corrente, magnitude e ângulo
+        entradas = [X(:,13:18) X(:,55:60)];
+    case 2
+        % Tradicional: Subestação, tensão e corrente, somente magnitude
+        entradas = [X(:,13:18)];
+    case 3
+        % Tradicional: Subestação, somente magnitude da corrente
+        entradas = [X(:,13:15)];
+    case 4
+        % Tradicional: Subestação, somente magnitude da tensão
+        entradas = [X(:,16:18)];
+    case 5
+        % Smart Meter: vários, somente magnitude da tensão, inicio e fim
+        entradas = [X(:,16:18) X(:,40:42) X(:,28:30) X(:,31:33)];
+    case 6
+        % Smart Meter: vários, medições nas chaves, V e I, somente mag
+        entradas = [X(:,19:27) X(:,34:39) X(:,1:15)];
+    case 7
+        % Tradicional: V e I + Smart Meters: V, mag
+        entradas = [X(:,13:18) X(:,55:60) X(:,16:18) X(:,40:42) X(:,28:30) X(:,31:33)];
+    case 8
+        % PMU: vários, inicio e fim, somente V, mag 
+        entradas = [X(:,16:18) X(:,40:42) X(:,28:30) X(:,31:33) X(:,58:60) X(:,82:84) X(:,70:72) X(:,73:75)];
+    case 9
+        % PMU: vários, medições nas chaves, somente V, mag e ang
+        entradas = [X(:,19:27) X(:,34:39) X(:,61:69) X(:,76:81)];
+    case 10
+        % PMU: vários, medições nas chaves, V e I, mag e ang
+        entradas = [X(:,19:27) X(:,34:39) X(:,61:69) X(:,76:81), X(:,1:15), X(:,47:57)];         
+    otherwise
+        display('Caso não cadastrado')
+end
+
+
+
+
+% entradas = [matriz_entrada(:,16:18) matriz_entrada(:,40:42)
+% matriz_entrada(:,28:30) matriz_entrada(:,31:33)]; % SM início e fim
+% entradas = [matriz_entrada(:,19:27) matriz_entrada(:,34:39)]; % SM nas chaves
